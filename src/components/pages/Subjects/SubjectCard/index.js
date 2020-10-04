@@ -59,13 +59,13 @@ export default function SubjectCard({ details }) {
                         >
                             <Typography variant="body1">Code: {code}</Typography>
                             <Typography variant="body1">
-                                Schedule: {schedule.join("/")}
+                                Schedule: {schedule}
                             </Typography>
                             <Typography variant="body1">
                                 Professor: {professor}
                             </Typography>
                             <Typography variant="body1">
-                                Lessons: {lessons}
+                                Lessons: {lessons.length}
                             </Typography>
                         </Typography>
                     </CardContent>
