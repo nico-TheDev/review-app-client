@@ -1,5 +1,4 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { useState } from "react";
 import {
     Modal,
     Backdrop,
@@ -9,47 +8,57 @@ import {
     Divider,
     Button,
     TextField,
-    IconButton
+    IconButton,
 } from "@material-ui/core";
 import NoteAddIcon from "@material-ui/icons/NoteAdd";
 import CloseIcon from "@material-ui/icons/Close";
+import useStyles from "./styles";
 
-const useStyles = makeStyles((theme) => ({
-    modal: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    paper: {
-        backgroundColor: theme.palette.background.paper,
-        border: "2px solid #000",
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
-        width: "80%",
-        height: "80vh",
-        position: "relative",
-    },
-    title: {
-        display: "flex",
-        alignItems: "center",
-    },
-    form: {
-        width: "100%",
-    },
-    close:{
-        position:'absolute',
-        top:20,
-        right:20
-    }
-}));
+import api from "api/reviewapp.instance";
 
-export default function TransitionsModal({ open, handleClose }) {
+export default function TransitionsModal({
+    open,
+    handleClose,
+    handleAlertOpen,
+}) {
     const classes = useStyles();
+    const [subjectData, setSubjectData] = useState({
+        name: "",
+        code: "",
+        schedule: "",
+        professor: "",
+    });
+
+    const handleChange = (e) => {
+        const current = e.target.name;
+        const newData = {
+            ...subjectData,
+        };
+        newData[current] = e.target.value;
+
+        setSubjectData(newData);
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        console.log("Submitted!");
+        api.post("/subject/new", {
+            data: subjectData,
+        })
+            .then((res) => {
+                setSubjectData({
+                    name: "",
+                    code: "",
+                    schedule: "",
+                    professor: "",
+                });
+                handleClose();
+                handleAlertOpen("Subject Added!", "success");
+            })
+            .catch((err) => {
+                handleAlertOpen("Subject not Added", "error");
+                console.error(err);
+            });
     };
 
     return (
@@ -72,10 +81,10 @@ export default function TransitionsModal({ open, handleClose }) {
                     alignContent="flex-start"
                     spacing={2}
                 >
-                {/* Close */}
-                <IconButton className={classes.close} onClick={handleClose}>
-                    <CloseIcon/>
-                </IconButton>
+                    {/* Close */}
+                    <IconButton className={classes.close} onClick={handleClose}>
+                        <CloseIcon />
+                    </IconButton>
 
                     <Grid item xs={12}>
                         <Typography
@@ -107,6 +116,8 @@ export default function TransitionsModal({ open, handleClose }) {
                                 label="Subject Name"
                                 className={classes.form}
                                 name="name"
+                                onChange={handleChange}
+                                value={subjectData.name}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -115,6 +126,8 @@ export default function TransitionsModal({ open, handleClose }) {
                                 label="Subject Code"
                                 className={classes.form}
                                 name="code"
+                                onChange={handleChange}
+                                value={subjectData.code}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -123,15 +136,19 @@ export default function TransitionsModal({ open, handleClose }) {
                                 label="Subject Professor"
                                 className={classes.form}
                                 name="professor"
+                                onChange={handleChange}
+                                value={subjectData.professor}
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
-                                id="days"
+                                id="schedule"
                                 label="Subject Schedule"
                                 className={classes.form}
-                                name="days"
+                                name="schedule"
                                 helperText="Mon/Wed/Thu separate by slash"
+                                onChange={handleChange}
+                                value={subjectData.schedule}
                             />
                         </Grid>
 
