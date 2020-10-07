@@ -25,6 +25,7 @@ const useStyles = makeStyles({
     },
     containerStyle: {
         position: "relative",
+        padding:'1.5rem'
     },
 });
 

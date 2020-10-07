@@ -52,7 +52,7 @@ export default function TransitionsModal({
                     schedule: "",
                     professor: "",
                 });
-                handleClose();
+                setTimeout(handleClose, 500);
                 handleAlertOpen("Subject Added!", "success");
             })
             .catch((err) => {

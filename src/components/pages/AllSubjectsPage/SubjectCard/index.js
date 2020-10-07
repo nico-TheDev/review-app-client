@@ -27,8 +27,8 @@ export default function SubjectCard({ details }) {
     const classes = useStyles();
     const [ random,setRandom] = useState(0);
     
-    const { name, code, schedule, professor, lessons } = details;
-
+    const { name, code, schedule, professor,_id:id } = details;
+    console.log(details);
     useEffect(() =>{
         setRandom(Math.floor(Math.random() * 100))
     },[])
@@ -64,9 +64,6 @@ export default function SubjectCard({ details }) {
                             <Typography variant="body1">
                                 Professor: {professor}
                             </Typography>
-                            <Typography variant="body1">
-                                Lessons: {lessons.length}
-                            </Typography>
                         </Typography>
                     </CardContent>
                 </CardActionArea>
@@ -77,7 +74,7 @@ export default function SubjectCard({ details }) {
                         variant="outlined"
                         fullWidth
                         component={Link}
-                        to='/subject/id'
+                        to={`/subject/${id}`}
                     >
                         Open
                     </Button>
