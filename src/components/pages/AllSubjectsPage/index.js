@@ -13,7 +13,7 @@ import Alert from "@material-ui/lab/Alert";
 import CreateIcon from "@material-ui/icons/Create";
 
 import SubjectCard from "./SubjectCard";
-import Modal from "./Modal";
+import Modal from "./SubjectModal";
 
 import api from "api/reviewapp.instance";
 

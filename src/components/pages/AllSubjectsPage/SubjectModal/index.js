@@ -16,7 +16,7 @@ import useStyles from "./styles";
 
 import api from "api/reviewapp.instance";
 
-export default function TransitionsModal({
+export default function SubjectModal({
     open,
     handleClose,
     handleAlertOpen,
