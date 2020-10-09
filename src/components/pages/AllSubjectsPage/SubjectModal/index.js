@@ -17,7 +17,7 @@ import useStyles from "./styles";
 import api from "api/reviewapp.instance";
 import { useAlert } from "contexts/AlertContext";
 
-export default function SubjectModal({ open,handleClose }) {
+export default function SubjectModal({ open, handleClose }) {
     const classes = useStyles();
     const { handleAlertOpen, handleAlertClose } = useAlert();
     const [subjectData, setSubjectData] = useState({
@@ -40,23 +40,27 @@ export default function SubjectModal({ open,handleClose }) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        api.post("/subject/new", {
-            data: subjectData,
-        })
-            .then((res) => {
-                setSubjectData({
-                    name: "",
-                    code: "",
-                    schedule: "",
-                    professor: "",
-                });
-                setTimeout(handleClose, 500);
-                handleAlertOpen("Subject Added!", "success");
+        if (Object.values(subjectData).every((item) => item !== "")) {
+            api.post("/subject/new", {
+                data: subjectData,
             })
-            .catch((err) => {
-                handleAlertOpen("Subject not Added", "error");
-                console.error(err);
-            });
+                .then((res) => {
+                    setSubjectData({
+                        name: "",
+                        code: "",
+                        schedule: "",
+                        professor: "",
+                    });
+                    setTimeout(handleClose, 500);
+                    handleAlertOpen("Subject Added!", "success");
+                })
+                .catch((err) => {
+                    handleAlertOpen("Subject not Added", "error");
+                    console.error(err);
+                });
+        }else{
+            handleAlertOpen("Please fill the text fields", "error");
+        }
     };
 
     return (

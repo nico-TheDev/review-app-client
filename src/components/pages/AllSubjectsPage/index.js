@@ -14,24 +14,12 @@ import SubjectCard from "./SubjectCard";
 import Modal from "./SubjectModal";
 
 import api from "api/reviewapp.instance";
-
-const useStyles = makeStyles({
-    fabStyle: {
-        position: "fixed",
-        bottom: 20,
-        right: 20,
-    },
-    containerStyle: {
-        position: "relative",
-        padding:'1.5rem'
-    },
-});
+import useStyles from 'components/shared/fabUseStyle'
 
 export default function Subjects() {
     const classes = useStyles();
-    const [open, setOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
     const [subjects, setSubjects] = useState([]);
-
 
     useEffect(() => {
         api.get("/subject/all")
@@ -41,14 +29,14 @@ export default function Subjects() {
             .catch((err) => {
                 console.log(err);
             });
-    }, [open, setOpen]);
+    }, [isOpen, setIsOpen]);
 
     const handleOpen = () => {
-        setOpen(true);
+        setIsOpen(true);
     };
 
     const handleClose = () => {
-        setOpen(false);
+        setIsOpen(false);
     };
 
 
@@ -85,9 +73,9 @@ export default function Subjects() {
             >
                 <CreateIcon />
             </Fab>
-            {open && (
+            {isOpen && (
                 <Modal
-                    open={open}
+                    open={isOpen}
                     handleClose={handleClose}
                 />
             )}
