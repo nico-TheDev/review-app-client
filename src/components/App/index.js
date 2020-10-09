@@ -10,6 +10,9 @@ import AllSubjects from "components/pages/AllSubjectsPage";
 import SubjectPage from "components/pages/SubjectPage";
 import NotFound from "components/pages/404";
 
+// CONTEXT
+import { AlertProvider } from "contexts/AlertContext";
+
 export default function App() {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
@@ -32,11 +35,13 @@ export default function App() {
                 })}
             >
                 <div className={classes.drawerHeader} />
-                <Switch>
-                    <Route exact path="/" component={AllSubjects} />
-                    <Route path="/subject/:id" component={SubjectPage} />
-                    <Route component={NotFound} />
-                </Switch>
+                <AlertProvider>
+                    <Switch>
+                        <Route exact path="/" component={AllSubjects} />
+                        <Route path="/subject/:id" component={SubjectPage} />
+                        <Route component={NotFound} />
+                    </Switch>
+                </AlertProvider>
             </main>
         </div>
     );
