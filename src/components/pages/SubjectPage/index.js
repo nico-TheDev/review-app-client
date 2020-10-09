@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Grid } from "@material-ui/core";
+import { Grid, Typography, Fab } from "@material-ui/core";
+import AddNoteIcon from "@material-ui/icons/NoteAdd";
 
 import api from "api/reviewapp.instance";
+import useStyles from "components/shared/fabUseStyle";
 import SubjectHead from "./SubjectHead";
 import LessonCard from "./LessonCard";
+import LessonModal from "./LessonModal";
 
 export default function SubjectPage({ match }) {
     const { id } = match.params;
+    const classes = useStyles(); // Fab Style
     const [currentSubject, setCurrentSubject] = useState(null);
     const [lessons, setLessons] = useState([]);
+    const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
         api.get(`/subject/${id}`).then(
@@ -28,7 +33,15 @@ export default function SubjectPage({ match }) {
             },
             (err) => console.error(err)
         );
-    }, [id]);
+    }, [id,isOpen,setIsOpen]);
+
+    const handleOpen = () => {
+        setIsOpen(true);
+    };
+
+    const handleClose = () => {
+        setIsOpen(false);
+    };
 
     if (!currentSubject) return "Loading...";
 
@@ -36,10 +49,24 @@ export default function SubjectPage({ match }) {
         <>
             <SubjectHead details={currentSubject} />
             <Grid container spacing={3} justify="center" alignItems="center">
-                {lessons.map((lesson) => (
-                    <LessonCard key={lesson._id} details={lesson} />
-                ))}
+                {lessons.length ? (
+                    lessons.map((lesson) => (
+                        <LessonCard key={lesson._id} details={lesson} />
+                    ))
+                ) : (
+                    <Grid item xs={12} container justify="center">
+                        <Typography variant={"h4"}>No Lessons Yet</Typography>
+                    </Grid>
+                )}
             </Grid>
+            <Fab
+                onClick={handleOpen}
+                color="primary"
+                className={classes.fabStyle}
+            >
+                <AddNoteIcon />
+            </Fab>
+            <LessonModal open={isOpen} handleClose={handleClose} />
         </>
     );
 }
