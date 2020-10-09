@@ -19,9 +19,8 @@ export const AlertProvider = ({ children }) => {
     };
     const handleAlertClose = () => {
         setAlertStatus({
+            ...alertStatus,
             status: false,
-            message: "",
-            type: "success",
         });
     };
 
