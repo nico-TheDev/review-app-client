@@ -6,10 +6,8 @@ import {
     Divider,
     IconButton,
     Fab,
-    Snackbar,
 } from "@material-ui/core";
 import FilterListIcon from "@material-ui/icons/FilterList";
-import Alert from "@material-ui/lab/Alert";
 import CreateIcon from "@material-ui/icons/Create";
 
 import SubjectCard from "./SubjectCard";
@@ -32,12 +30,8 @@ const useStyles = makeStyles({
 export default function Subjects() {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
-    const [isAlertOpen, setIsAlertOpen] = useState({
-        status: false,
-        message: "",
-        type:'success'
-    });
     const [subjects, setSubjects] = useState([]);
+
 
     useEffect(() => {
         api.get("/subject/all")
@@ -57,39 +51,9 @@ export default function Subjects() {
         setOpen(false);
     };
 
-    const handleAlertOpen = (message,type) => {
-        setIsAlertOpen({
-            status: true,
-            message,
-            type
-        });
-    };
-    const handleAlertClose = () => {
-        setIsAlertOpen({
-            status: false,
-            message: "",
-            type:'success'
-        });
-    };
 
     return (
         <Grid container spacing={2} className={classes.containerStyle}>
-            {/* ALERT MESSAGE */}
-            <Snackbar
-                open={isAlertOpen.status}
-                autoHideDuration={3000}
-                onClose={handleAlertClose}
-            >
-                <Alert
-                    onClose={handleAlertClose}
-                    severity={isAlertOpen.type}
-                    variant="filled"
-                    elevation={6}
-                >
-                    Subject Added!
-                </Alert>
-            </Snackbar>
-            {/* ALERT MESSAGE */}
 
             <Grid item xs={12} container justify="space-between">
                 <Typography variant="h4" color="primary">
@@ -125,7 +89,6 @@ export default function Subjects() {
                 <Modal
                     open={open}
                     handleClose={handleClose}
-                    handleAlertOpen={handleAlertOpen}
                 />
             )}
         </Grid>

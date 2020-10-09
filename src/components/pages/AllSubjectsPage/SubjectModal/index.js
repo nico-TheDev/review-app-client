@@ -15,13 +15,11 @@ import CloseIcon from "@material-ui/icons/Close";
 import useStyles from "./styles";
 
 import api from "api/reviewapp.instance";
+import { useAlert } from "contexts/AlertContext";
 
-export default function SubjectModal({
-    open,
-    handleClose,
-    handleAlertOpen,
-}) {
+export default function SubjectModal({ open,handleClose }) {
     const classes = useStyles();
+    const { handleAlertOpen, handleAlertClose } = useAlert();
     const [subjectData, setSubjectData] = useState({
         name: "",
         code: "",
