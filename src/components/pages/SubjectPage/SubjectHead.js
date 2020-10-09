@@ -1,6 +1,11 @@
 import React from "react";
-import { Grid, Typography } from "@material-ui/core";
+import { useParams, useHistory } from "react-router-dom";
+import { Grid, Typography, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { DeleteOutline, Edit } from "@material-ui/icons";
+
+import api from "api/reviewapp.instance";
+import { useAlert } from "contexts/AlertContext";
 
 const useStyles = makeStyles((theme) => ({
     head: {
@@ -9,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
         zIndex: 2,
         color: "white",
         textAlign: "center",
-        marginBottom:theme.spacing(4)
+        marginBottom: theme.spacing(4),
     },
     backdrop: {
         position: "absolute",
@@ -24,10 +29,28 @@ const useStyles = makeStyles((theme) => ({
         top: 0,
         left: 0,
     },
+    button: {
+        marginLeft: theme.spacing(4),
+    },
 }));
 
 export default function SubjectHead({ details }) {
     const classes = useStyles();
+    const { handleAlertOpen } = useAlert();
+    const params = useParams();
+    const history = useHistory();
+
+    const handleDelete = () => {
+        api.delete(`/subject/${params.id}`)
+            .then((res) => {
+                console.log(res);
+                handleAlertOpen('Lesson Deleted','success')
+                history.push("/");
+            })
+            .catch((err) => {
+                handleAlertOpen('Lesson not Deleted','error')
+                console.error(err)});
+    };
 
     return (
         <Grid
@@ -40,7 +63,7 @@ export default function SubjectHead({ details }) {
             <div className={classes.backdrop} />
             <Grid item xs={12}>
                 <Typography variant={"h4"} component="h2">
-                {details.name}
+                    {details.name}
                 </Typography>
             </Grid>
             <Grid item xs={4}>
@@ -57,6 +80,24 @@ export default function SubjectHead({ details }) {
                 <Typography variant={"h6"}>
                     Schedule: <span>{details.schedule}</span>
                 </Typography>
+            </Grid>
+            <Grid item xs={6} container justify="center">
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    startIcon={<DeleteOutline />}
+                    onClick={handleDelete}
+                >
+                    Delete Subject
+                </Button>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<Edit />}
+                    className={classes.button}
+                >
+                    Edit Subject
+                </Button>
             </Grid>
         </Grid>
     );
