@@ -12,6 +12,7 @@ import NotFound from "components/pages/404";
 
 // CONTEXT
 import { AlertProvider } from "contexts/AlertContext";
+import { ModalProvider } from "contexts/ModalContext";
 
 export default function App() {
     const classes = useStyles();
@@ -36,11 +37,13 @@ export default function App() {
             >
                 <div className={classes.drawerHeader} />
                 <AlertProvider>
-                    <Switch>
-                        <Route exact path="/" component={AllSubjects} />
-                        <Route path="/subject/:id" component={SubjectPage} />
-                        <Route component={NotFound} />
-                    </Switch>
+                    <ModalProvider>
+                        <Switch>
+                            <Route exact path="/" component={AllSubjects} />
+                            <Route path="/subject/:id" component={SubjectPage} />
+                            <Route component={NotFound} />
+                        </Switch>
+                    </ModalProvider>
                 </AlertProvider>
             </main>
         </div>

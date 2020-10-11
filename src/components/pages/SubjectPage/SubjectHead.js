@@ -20,9 +20,7 @@ const useStyles = makeStyles((theme) => ({
         position: "absolute",
         width: "100%",
         height: "100%",
-        backgroundImage: `linear-gradient(to right,rgba(0,0,0,0.7),rgba(0,0,0,0.8)), url(https://source.unsplash.com/random/${Math.floor(
-            Math.random() * 100
-        )})`,
+        backgroundImage: `linear-gradient(to right,rgba(0,0,0,0.7),rgba(0,0,0,0.8)), url(https://source.unsplash.com/1280x720/?programming,computer/${Math.floor(Math.random() * 100)})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         zIndex: -1,
@@ -68,7 +66,7 @@ export default function SubjectHead({ details }) {
             </Grid>
             <Grid item xs={4}>
                 <Typography variant={"h6"}>
-                    Code: <span>{details.code}</span>
+                    Code: <span>{details.code.toUpperCase()}</span>
                 </Typography>
             </Grid>
             <Grid item xs={4}>
@@ -78,7 +76,7 @@ export default function SubjectHead({ details }) {
             </Grid>
             <Grid item xs={4}>
                 <Typography variant={"h6"}>
-                    Schedule: <span>{details.schedule}</span>
+                    Schedule: <span>{details.schedule.toUpperCase()}</span>
                 </Typography>
             </Grid>
             <Grid item xs={6} container justify="center">

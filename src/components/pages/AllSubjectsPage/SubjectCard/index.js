@@ -39,7 +39,7 @@ export default function SubjectCard({ details }) {
                 <CardActionArea>
                     <CardMedia
                         className={classes.media}
-                        image={`https://source.unsplash.com/random/${random}`}
+                        image={`https://source.unsplash.com/1280x720/?programming,computer/${random}`}
                         title="Contemplative Reptile"
                         loading='lazy'
                     />
@@ -57,9 +57,9 @@ export default function SubjectCard({ details }) {
                             color="textSecondary"
                             component="div"
                         >
-                            <Typography variant="body1">Code: {code}</Typography>
+                            <Typography variant="body1">Code: {code.toUpperCase()}</Typography>
                             <Typography variant="body1">
-                                Schedule: {schedule}
+                                Schedule: {schedule.toUpperCase()}
                             </Typography>
                             <Typography variant="body1">
                                 Professor: {professor}
