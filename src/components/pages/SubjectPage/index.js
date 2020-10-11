@@ -7,13 +7,16 @@ import useStyles from "components/shared/fabUseStyle";
 import SubjectHead from "./SubjectHead";
 import LessonCard from "./LessonCard";
 import LessonModal from "./LessonModal";
+import { useModal } from "contexts/ModalContext";
+import ActionTypes from 'actions/ActionTypes'
+
 
 export default function SubjectPage({ match }) {
     const { id } = match.params;
+    const {state, dispatch} = useModal()
     const classes = useStyles(); // Fab Style
     const [currentSubject, setCurrentSubject] = useState(null);
     const [lessons, setLessons] = useState([]);
-    const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
         api.get(`/subject/${id}`).then(
@@ -23,7 +26,7 @@ export default function SubjectPage({ match }) {
             },
             (err) => console.error(err)
         );
-    }, [id]);
+    }, [id,state]);
 
     useEffect(() => {
         api.get(`/subject/${id}/lesson/all`).then(
@@ -33,14 +36,10 @@ export default function SubjectPage({ match }) {
             },
             (err) => console.error(err)
         );
-    }, [id,isOpen,setIsOpen]);
+    }, [id,state]);
 
     const handleOpen = () => {
-        setIsOpen(true);
-    };
-
-    const handleClose = () => {
-        setIsOpen(false);
+        dispatch({type:ActionTypes.OPEN_LESSON_MODAL})
     };
 
     if (!currentSubject) return "Loading...";
@@ -66,7 +65,7 @@ export default function SubjectPage({ match }) {
             >
                 <AddNoteIcon />
             </Fab>
-            <LessonModal open={isOpen} handleClose={handleClose} />
+            <LessonModal/>
         </>
     );
 }

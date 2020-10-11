@@ -18,17 +18,23 @@ import useStyles from "./styles";
 
 import api from "api/reviewapp.instance";
 import { useAlert } from "contexts/AlertContext";
+import { useModal } from "contexts/ModalContext";
+import ActionTypes from 'actions/ActionTypes'
 
-export default function LessonModal({ open, handleClose }) {
+export default function LessonModal() {
     const classes = useStyles();
     const params = useParams();
     const { handleAlertOpen } = useAlert();
+    const { state,dispatch } = useModal();
+    const { isLessonModalOpen: open } = state;
     const [lessonData, setLessonData] = useState({
         subjectID: params.id,
         title: "",
         count: "",
         description: "",
     });
+
+    const handleClose = () => dispatch({type:ActionTypes.CLOSE_LESSON_MODAL})
 
     const handleChange = (e) => {
         const current = e.target.name;

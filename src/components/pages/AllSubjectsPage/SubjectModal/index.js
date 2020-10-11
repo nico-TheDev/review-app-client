@@ -16,16 +16,21 @@ import useStyles from "./styles";
 
 import api from "api/reviewapp.instance";
 import { useAlert } from "contexts/AlertContext";
+import { useModal } from "contexts/ModalContext";
+import ActionTypes from 'actions/ActionTypes'
 
-export default function SubjectModal({ open, handleClose }) {
+export default function SubjectModal() {
     const classes = useStyles();
-    const { handleAlertOpen, handleAlertClose } = useAlert();
+    const { handleAlertOpen } = useAlert();
+    const { state, dispatch } = useModal();
     const [subjectData, setSubjectData] = useState({
         name: "",
         code: "",
         schedule: "",
         professor: "",
     });
+
+    const handleClose = () => dispatch({type:ActionTypes.CLOSE_SUBJECT_MODAL})
 
     const handleChange = (e) => {
         const current = e.target.name;
@@ -63,12 +68,13 @@ export default function SubjectModal({ open, handleClose }) {
         }
     };
 
+
     return (
         <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
             className={classes.modal}
-            open={open}
+            open={state.isSubjectModalOpen}
             onClose={handleClose}
             closeAfterTransition
             BackdropComponent={Backdrop}
@@ -76,7 +82,7 @@ export default function SubjectModal({ open, handleClose }) {
                 timeout: 500,
             }}
         >
-            <Fade in={open}>
+            <Fade in={state.isSubjectModalOpen}>
                 <Grid
                     container
                     className={classes.paper}

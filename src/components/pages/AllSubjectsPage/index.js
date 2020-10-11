@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import {
     Typography,
     Grid,
@@ -15,10 +14,13 @@ import Modal from "./SubjectModal";
 
 import api from "api/reviewapp.instance";
 import useStyles from 'components/shared/fabUseStyle'
+import { useModal } from 'contexts/ModalContext'
+import ActionTypes from 'actions/ActionTypes'
+
 
 export default function Subjects() {
     const classes = useStyles();
-    const [isOpen, setIsOpen] = useState(false);
+    const { state,dispatch } = useModal();
     const [subjects, setSubjects] = useState([]);
 
     useEffect(() => {
@@ -29,16 +31,11 @@ export default function Subjects() {
             .catch((err) => {
                 console.log(err);
             });
-    }, [isOpen, setIsOpen]);
+    }, [state]);
 
     const handleOpen = () => {
-        setIsOpen(true);
+        dispatch({type:ActionTypes.OPEN_SUBJECT_MODAL})
     };
-
-    const handleClose = () => {
-        setIsOpen(false);
-    };
-
 
     return (
         <Grid container spacing={2} className={classes.containerStyle}>
@@ -73,11 +70,8 @@ export default function Subjects() {
             >
                 <CreateIcon />
             </Fab>
-            {isOpen && (
-                <Modal
-                    open={isOpen}
-                    handleClose={handleClose}
-                />
+            {state.isSubjectModalOpen && (
+                <Modal/>
             )}
         </Grid>
     );
