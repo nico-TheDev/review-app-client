@@ -19,16 +19,23 @@ import { useAlert } from "contexts/AlertContext";
 import { useModal } from "contexts/ModalContext";
 import ActionTypes from 'actions/ActionTypes'
 
-export default function SubjectModal() {
+const initState = (editSubject) => editSubject ? {
+    name: editSubject.name,
+    code: editSubject.code,
+    schedule: editSubject.schedule,
+    professor: editSubject.professor,
+}: {
+    name: "",
+    code: "",
+    schedule: "",
+    professor: "",
+}
+
+export default function SubjectModal({ editSubject }) {
     const classes = useStyles();
     const { handleAlertOpen } = useAlert();
     const { state, dispatch } = useModal();
-    const [subjectData, setSubjectData] = useState({
-        name: "",
-        code: "",
-        schedule: "",
-        professor: "",
-    });
+    const [subjectData, setSubjectData] = useState(initState(editSubject));
 
     const handleClose = () => dispatch({type:ActionTypes.CLOSE_SUBJECT_MODAL})
 
@@ -46,7 +53,7 @@ export default function SubjectModal() {
         e.preventDefault();
 
         if (Object.values(subjectData).every((item) => item !== "")) {
-            api.post("/subject/new", {
+            api.post(editSubject ? `/subject/${editSubject._id}`:"/subject/new", {
                 data: subjectData,
             })
                 .then((res) => {
@@ -57,10 +64,10 @@ export default function SubjectModal() {
                         professor: "",
                     });
                     setTimeout(handleClose, 500);
-                    handleAlertOpen("Subject Added!", "success");
+                    handleAlertOpen(editSubject ? 'Subject Updated' :"Subject Added!", "success");
                 })
                 .catch((err) => {
-                    handleAlertOpen("Subject not Added", "error");
+                    handleAlertOpen(editSubject ? 'Subject not Updated' :"Subject not Added!", "error");
                     console.error(err);
                 });
         }else{
@@ -101,7 +108,7 @@ export default function SubjectModal() {
                             className={classes.title}
                         >
                             <NoteAddIcon fontSize="large" />
-                            New Subject
+                            {editSubject ? editSubject.name : 'New Subject'}
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
@@ -167,8 +174,7 @@ export default function SubjectModal() {
                                 type="submit"
                                 fullWidth
                             >
-                                {" "}
-                                Add Subject
+                                {editSubject ? 'Edit ' : 'Add '} Subject
                             </Button>
                         </Grid>
                     </Grid>

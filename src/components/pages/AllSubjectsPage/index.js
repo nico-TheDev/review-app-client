@@ -31,7 +31,7 @@ export default function Subjects() {
             .catch((err) => {
                 console.log(err);
             });
-    }, [state]);
+    }, [state.isSubjectModalOpen]);
 
     const handleOpen = () => {
         dispatch({type:ActionTypes.OPEN_SUBJECT_MODAL})
