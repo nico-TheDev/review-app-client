@@ -6,10 +6,12 @@ import { DeleteOutline, Edit } from "@material-ui/icons";
 
 import api from "api/reviewapp.instance";
 import { useAlert } from "contexts/AlertContext";
+import { useModal } from "contexts/ModalContext";
+import ActionTypes from 'actions/ActionTypes'
 
 const useStyles = makeStyles((theme) => ({
     head: {
-        height: "40vh",
+        minHeight: "40vh",
         position: "relative",
         zIndex: 2,
         color: "white",
@@ -35,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SubjectHead({ details }) {
     const classes = useStyles();
     const { handleAlertOpen } = useAlert();
+    const { dispatch } = useModal()
     const params = useParams();
     const history = useHistory();
 
@@ -49,6 +52,10 @@ export default function SubjectHead({ details }) {
                 handleAlertOpen('Lesson not Deleted','error')
                 console.error(err)});
     };
+
+    const handleEdit = () => {
+        dispatch({type:ActionTypes.OPEN_SUBJECT_MODAL})
+    }
 
     return (
         <Grid
@@ -93,6 +100,7 @@ export default function SubjectHead({ details }) {
                     color="primary"
                     startIcon={<Edit />}
                     className={classes.button}
+                    onClick={handleEdit}
                 >
                     Edit Subject
                 </Button>

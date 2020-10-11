@@ -9,7 +9,7 @@ import LessonCard from "./LessonCard";
 import LessonModal from "./LessonModal";
 import { useModal } from "contexts/ModalContext";
 import ActionTypes from 'actions/ActionTypes'
-
+import SubjectModal from 'components/pages/AllSubjectsPage/SubjectModal'
 
 export default function SubjectPage({ match }) {
     const { id } = match.params;
@@ -26,7 +26,7 @@ export default function SubjectPage({ match }) {
             },
             (err) => console.error(err)
         );
-    }, [id,state]);
+    }, [id,state.isSubjectModalOpen]);
 
     useEffect(() => {
         api.get(`/subject/${id}/lesson/all`).then(
@@ -36,7 +36,7 @@ export default function SubjectPage({ match }) {
             },
             (err) => console.error(err)
         );
-    }, [id,state]);
+    }, [id,state.isLessonModalOpen]);
 
     const handleOpen = () => {
         dispatch({type:ActionTypes.OPEN_LESSON_MODAL})
@@ -66,6 +66,7 @@ export default function SubjectPage({ match }) {
                 <AddNoteIcon />
             </Fab>
             <LessonModal/>
+            <SubjectModal editSubject={currentSubject}/>
         </>
     );
 }
