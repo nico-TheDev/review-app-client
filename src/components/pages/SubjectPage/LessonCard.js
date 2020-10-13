@@ -43,7 +43,7 @@ export default function LessonCard({ details }) {
         <Grid item xs={10}>
             <Paper elevation={4}>
                 <Button
-                    to={`/lesson/${details._id}`}
+                    to={`/dashboard/lesson/${details._id}`}
                     component={Link}
                     className={classes.card}
                 >

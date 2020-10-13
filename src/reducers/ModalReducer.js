@@ -1,7 +1,7 @@
 import ActionTypes from 'actions/ActionTypes'
 
-export default function ModalReducer(state,dispatch){
-    switch(dispatch.type){
+export default function ModalReducer(state,action){
+    switch(action.type){
         case ActionTypes.OPEN_SUBJECT_MODAL:
             return {
                 ...state,

@@ -46,7 +46,7 @@ export default function SubjectHead({ details }) {
             .then((res) => {
                 console.log(res);
                 handleAlertOpen('Lesson Deleted','success')
-                history.push("/");
+                history.push("/dashboard");
             })
             .catch((err) => {
                 handleAlertOpen('Lesson not Deleted','error')

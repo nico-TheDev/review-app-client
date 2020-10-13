@@ -19,22 +19,22 @@ import ListItemLink from "components/App/ListItem";
 const ROUTES = [
     {
         label: "Home",
-        to: "/",
+        to: "/dashboard",
         icon: <HomeIcon />,
     },
     {
         label: "Lessons",
-        to: "/lessons",
+        to: "/dashboard/lessons",
         icon: <LibraryBooksIcon />,
     },
     {
         label: "Settings",
-        to: "/settings",
+        to: "/dashboard/settings",
         icon: <SettingsIcon />,
     },
     {
         label: "Theme",
-        to: "/theme",
+        to: "/dashboard/theme",
         icon: <FormatPaintIcon />,
     },
 ];
