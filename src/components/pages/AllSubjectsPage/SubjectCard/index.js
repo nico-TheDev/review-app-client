@@ -74,7 +74,7 @@ export default function SubjectCard({ details }) {
                         variant="outlined"
                         fullWidth
                         component={Link}
-                        to={`/subject/${id}`}
+                        to={`/dashboard/subject/${id}`}
                     >
                         Open
                     </Button>

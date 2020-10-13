@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import clsx from "clsx";
 
 import { useStyles } from "./styles";
@@ -15,9 +15,11 @@ import NotFound from "components/pages/404";
 // CONTEXT
 import { AlertProvider } from "contexts/AlertContext";
 import { ModalProvider } from "contexts/ModalContext";
+import { useAuth } from "contexts/AuthContext";
 
 export default function App() {
     const classes = useStyles();
+    const { authState, authDispatch } = useAuth();
     const [open, setOpen] = useState(false);
 
     const handleDrawerOpen = () => {
@@ -31,39 +33,49 @@ export default function App() {
     return (
         <Switch>
             <Route exact path="/" component={LoginPage} />
+            <Route exact path="/login" component={LoginPage} />
             <Route exact path="/signup" component={SignupPage} />
 
-            <Route
-                path="/dashboard"
-                render={({ match: url }) => (
-                    <div className={classes.root}>
-                        <AppBar
-                            open={open}
-                            handleDrawerOpen={handleDrawerOpen}
-                        />
-                        <Drawer
-                            handleDrawerClose={handleDrawerClose}
-                            open={open}
-                        />
-                        <main
-                            className={clsx(classes.content, {
-                                [classes.contentShift]: open,
-                            })}
-                        >
-                            <div className={classes.drawerHeader} />
-                            <AlertProvider>
-                                <ModalProvider>
-                                    <Route path={url} component={AllSubjects} />
-                                    <Route
-                                        path={`${url}/subject/:id`}
-                                        component={SubjectPage}
-                                    />
-                                </ModalProvider>
-                            </AlertProvider>
-                        </main>
-                    </div>
-                )}
-            />
+            {authState.user ? (
+                <Route
+                    path="/dashboard"
+                    render={({ match }) => (
+                        <div className={classes.root}>
+                            <AppBar
+                                open={open}
+                                handleDrawerOpen={handleDrawerOpen}
+                            />
+                            <Drawer
+                                handleDrawerClose={handleDrawerClose}
+                                open={open}
+                            />
+                            <main
+                                className={clsx(classes.content, {
+                                    [classes.contentShift]: open,
+                                })}
+                            >
+                                <div className={classes.drawerHeader} />
+                                <AlertProvider>
+                                    <ModalProvider>
+                                        <Route
+                                            exact
+                                            path={match.url}
+                                            component={AllSubjects}
+                                        />
+                                        <Route
+                                            exact
+                                            path={`${match.url}/subject/:id`}
+                                            component={SubjectPage}
+                                        />
+                                    </ModalProvider>
+                                </AlertProvider>
+                            </main>
+                        </div>
+                    )}
+                />
+            ) : (
+                <Redirect to="/login" />
+            )}
             <Route component={NotFound} />
         </Switch>
     );
