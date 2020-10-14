@@ -43,7 +43,7 @@ export default function SignIn() {
 
         if (
             Object.values(signupData).every((item) => item !== "") &&
-            signupData.password === signupData.passwordTwo
+            signupData.password === signupData.passwordTwo && regex.test(signupData.email)
         ) {
             api.post("/signup", {
                 data: signupData,

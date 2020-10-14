@@ -8,34 +8,10 @@ import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import PersonIcon from "@material-ui/icons/AccountCircle";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
-const useStyles = makeStyles((theme) => ({
-    paper: {
-        marginTop: theme.spacing(8),
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.primary.main,
-        width: theme.spacing(8),
-        height: theme.spacing(8),
-    },
-    form: {
-        width: "100%", // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
-    icon: {
-        width: theme.spacing(6),
-        height: theme.spacing(6),
-    },
-}));
+import { useStyles } from './styles';
+import api from 'api/reviewapp.instance';
 
 export default function SignIn() {
     const classes = useStyles();
@@ -43,14 +19,71 @@ export default function SignIn() {
         email:"",
         password:""
     })
+    const [errorHandler,setErrorHandler] = useState({
+        email:{
+            hasError:false,
+            msg:''
+        },
+        password:{
+            hasError:false,
+            msg:''
+        }
+    })
 
 
     const handleChange = (e) => {
-        const current = e.target.name ;
+        const current = e.target.name;
+        const newData = {
+            ...loginData,
+        };
+        newData[current] = e.target.value;
 
-        
-
+        setLoginData(newData);
     }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
+        let newErrorHandler = { ...errorHandler} 
+        if(Object.values(loginData).every(item => item !== "") && regex.test(loginData.email)){
+            api.post('/login',{
+                data:loginData
+            }).then((res) => {
+                console.log(res);
+            }).catch(err => console.error(err));
+        }else{
+            Object.values(loginData).forEach(item => {
+                if(!regex.test(loginData.email)){
+                    newErrorHandler.email = { 
+                        hasError:true,
+                        msg:'Incorrect Email'
+                    }
+                }
+                else if (loginData.password.length < 6){
+                    newErrorHandler.email = { 
+                        hasError:true,
+                        msg:'Password must be at least 6 characters'
+                    }
+                }
+                else{
+                    newErrorHandler.email = { 
+                        hasError:true,
+                        msg:"Email must not be blank"
+                    }
+                    newErrorHandler.password = {
+                        hasError:true,
+                        msg:"Password must not be blank"
+                    }
+                }
+
+            })
+        }
+
+        setErrorHandler(newErrorHandler)
+        
+    }
+
+
 
     return (
         <Container component="main" maxWidth="xs">
@@ -62,7 +95,7 @@ export default function SignIn() {
                 <Typography component="h1" variant="h5">
                     Log in
                 </Typography>
-                <form className={classes.form} noValidate autoComplete="off">
+                <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit}>
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -72,6 +105,11 @@ export default function SignIn() {
                         label="Email Address"
                         name="email"
                         autoFocus
+                        type="email"
+                        value={loginData.email}
+                        helperText={errorHandler.email.msg}
+                        error={errorHandler.email.hasError}
+                        onChange={handleChange}
                     />
                     <TextField
                         variant="outlined"
@@ -82,6 +120,10 @@ export default function SignIn() {
                         label="Password"
                         type="password"
                         id="password"
+                        value={loginData.email}
+                        helperText={errorHandler.email.msg}
+                        error={errorHandler.email.hasError}
+                        onChange={handleChange}
                     />
                     <Button
                         type="submit"
