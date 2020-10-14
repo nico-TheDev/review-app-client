@@ -5,34 +5,10 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import PersonIcon from "@material-ui/icons/AccountCircle";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
-const useStyles = makeStyles((theme) => ({
-    paper: {
-        marginTop: theme.spacing(8),
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.primary.main,
-        width: theme.spacing(8),
-        height: theme.spacing(8),
-    },
-    form: {
-        width: "100%", // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
-    icon: {
-        width: theme.spacing(6),
-        height: theme.spacing(6),
-    },
-}));
+import api from "api/reviewapp.instance";
+import { useStyles } from "./styles";
 
 export default function SignIn() {
     const classes = useStyles();
@@ -59,7 +35,6 @@ export default function SignIn() {
         newData[current] = e.target.value;
 
         setSignupData(newData);
-        
     };
 
     const handleSubmit = (e) => {
@@ -70,13 +45,22 @@ export default function SignIn() {
             Object.values(signupData).every((item) => item !== "") &&
             signupData.password === signupData.passwordTwo
         ) {
-            alert("sent");
+            api.post("/signup", {
+                data: signupData,
+            })
+                .then((res) => {
+                    console.log(res);
+                })
+                .catch((err) => console.error(err));
         } else {
             const keys = Object.keys(signupData);
             let newErrorState = { ...errorHandler };
             Object.values(signupData).forEach((val, i) => {
                 if (val === "") {
-                    newErrorState[keys[i]] = { hasError: true, msg: "Cannot be empty" };
+                    newErrorState[keys[i]] = {
+                        hasError: true,
+                        msg: "Cannot be empty",
+                    };
                 } else if (!regex.test(signupData.email)) {
                     newErrorState.email = {
                         hasError: true,
