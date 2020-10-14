@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -39,6 +39,18 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
     const classes = useStyles();
+    const [loginData,setLoginData] = useState({
+        email:"",
+        password:""
+    })
+
+
+    const handleChange = (e) => {
+        const current = e.target.name ;
+
+        
+
+    }
 
     return (
         <Container component="main" maxWidth="xs">
@@ -50,7 +62,7 @@ export default function SignIn() {
                 <Typography component="h1" variant="h5">
                     Log in
                 </Typography>
-                <form className={classes.form} noValidate>
+                <form className={classes.form} noValidate autoComplete="off">
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -59,7 +71,6 @@ export default function SignIn() {
                         id="email"
                         label="Email Address"
                         name="email"
-                        autoComplete="email"
                         autoFocus
                     />
                     <TextField
@@ -71,7 +82,6 @@ export default function SignIn() {
                         label="Password"
                         type="password"
                         id="password"
-                        autoComplete="current-password"
                     />
                     <Button
                         type="submit"
