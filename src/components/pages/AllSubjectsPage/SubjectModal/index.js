@@ -17,27 +17,37 @@ import useStyles from "./styles";
 import api from "api/reviewapp.instance";
 import { useAlert } from "contexts/AlertContext";
 import { useModal } from "contexts/ModalContext";
-import ActionTypes from 'actions/ActionTypes'
+import { useAuth } from "contexts/AuthContext";
+import ActionTypes from "actions/ActionTypes";
 
-const initState = (editSubject) => editSubject ? {
-    name: editSubject.name,
-    code: editSubject.code,
-    schedule: editSubject.schedule,
-    professor: editSubject.professor,
-}: {
-    name: "",
-    code: "",
-    schedule: "",
-    professor: "",
-}
+const initState = (editSubject, id) =>
+    editSubject
+        ? {
+              name: editSubject.name,
+              code: editSubject.code,
+              schedule: editSubject.schedule,
+              professor: editSubject.professor,
+              userID: editSubject.userID,
+          }
+        : {
+              name: "",
+              code: "",
+              schedule: "",
+              professor: "",
+          };
 
 export default function SubjectModal({ editSubject }) {
     const classes = useStyles();
     const { handleAlertOpen } = useAlert();
     const { state, dispatch } = useModal();
-    const [subjectData, setSubjectData] = useState(initState(editSubject));
+    const { authState } = useAuth();
+    const { token, userID } = authState;
+    const [subjectData, setSubjectData] = useState(
+        initState(editSubject, userID)
+    );
 
-    const handleClose = () => dispatch({type:ActionTypes.CLOSE_SUBJECT_MODAL})
+    const handleClose = () =>
+        dispatch({ type: ActionTypes.CLOSE_SUBJECT_MODAL });
 
     const handleChange = (e) => {
         const current = e.target.name;
@@ -53,28 +63,46 @@ export default function SubjectModal({ editSubject }) {
         e.preventDefault();
 
         if (Object.values(subjectData).every((item) => item !== "")) {
-            api.post(editSubject ? `/subject/${editSubject._id}`:"/subject/new", {
-                data: subjectData,
-            })
+            api.post(
+                editSubject ? `/subject/${editSubject._id}` : "/subject/new",
+                {
+                    data: {
+                        ...subjectData,
+                        userID,
+                    },
+                    params: {
+                        userID,
+                        token,
+                    },
+                }
+            )
                 .then((res) => {
                     setSubjectData({
                         name: "",
                         code: "",
                         schedule: "",
                         professor: "",
+                        userID,
                     });
                     setTimeout(handleClose, 500);
-                    handleAlertOpen(editSubject ? 'Subject Updated' :"Subject Added!", "success");
+                    handleAlertOpen(
+                        editSubject ? "Subject Updated" : "Subject Added!",
+                        "success"
+                    );
                 })
                 .catch((err) => {
-                    handleAlertOpen(editSubject ? 'Subject not Updated' :"Subject not Added!", "error");
+                    handleAlertOpen(
+                        editSubject
+                            ? "Subject not Updated"
+                            : "Subject not Added!",
+                        "error"
+                    );
                     console.error(err);
                 });
-        }else{
+        } else {
             handleAlertOpen("Please fill the text fields", "error");
         }
     };
-
 
     return (
         <Modal
@@ -108,7 +136,7 @@ export default function SubjectModal({ editSubject }) {
                             className={classes.title}
                         >
                             <NoteAddIcon fontSize="large" />
-                            {editSubject ? editSubject.name : 'New Subject'}
+                            {editSubject ? editSubject.name : "New Subject"}
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
@@ -174,7 +202,7 @@ export default function SubjectModal({ editSubject }) {
                                 type="submit"
                                 fullWidth
                             >
-                                {editSubject ? 'Edit ' : 'Add '} Subject
+                                {editSubject ? "Edit " : "Add "} Subject
                             </Button>
                         </Grid>
                     </Grid>
