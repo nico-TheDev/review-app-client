@@ -9,9 +9,12 @@ import Container from "@material-ui/core/Container";
 
 import api from "api/reviewapp.instance";
 import { useStyles } from "./styles";
+import { useAuth } from "contexts/AuthContext";
+import ActionTypes from "actions/ActionTypes";
 
 export default function SignIn() {
     const classes = useStyles();
+    const { authState, authDispatch } = useAuth();
     const [signupData, setSignupData] = useState({
         firstName: "",
         lastName: "",
@@ -43,13 +46,21 @@ export default function SignIn() {
 
         if (
             Object.values(signupData).every((item) => item !== "") &&
-            signupData.password === signupData.passwordTwo && regex.test(signupData.email)
+            signupData.password === signupData.passwordTwo &&
+            regex.test(signupData.email)
         ) {
             api.post("/signup", {
                 data: signupData,
             })
                 .then((res) => {
-                    console.log(res);
+                    const { user, token } = res.data;
+                    if (user) {
+                        authDispatch({
+                            type: ActionTypes.SET_TOKEN,
+                            token,
+                            userID: user,
+                        });
+                    }
                 })
                 .catch((err) => console.error(err));
         } else {
