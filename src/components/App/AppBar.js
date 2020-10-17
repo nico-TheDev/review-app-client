@@ -7,10 +7,13 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 
 import Menu from "components/Menu";
+import { useAuth } from "contexts/AuthContext";
 import { useStyles } from "./styles";
 
-export default function AppBarComponent({ open,handleDrawerOpen }) {
+export default function AppBarComponent({ open, handleDrawerOpen }) {
     const classes = useStyles();
+    const { authState } = useAuth();
+    const { user } = authState;
 
     return (
         <AppBar
@@ -29,8 +32,8 @@ export default function AppBarComponent({ open,handleDrawerOpen }) {
                 >
                     <MenuIcon />
                 </IconButton>
-                <Typography variant="h6" noWrap>
-                    Dashboard
+                <Typography variant="h6" noWrap className={classes.capitalize}>
+                    {user.firstName}'s Dashboard
                 </Typography>
 
                 <Menu />

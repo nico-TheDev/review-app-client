@@ -59,4 +59,7 @@ export const useStyles = makeStyles((theme) => ({
         }),
         marginLeft: 0,
     },
+    capitalize:{
+        textTransform:"capitalize"
+    }
 }));
