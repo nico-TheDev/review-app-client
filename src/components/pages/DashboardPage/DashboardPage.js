@@ -15,7 +15,7 @@ import ActionTypes from "actions/ActionTypes";
 export default function Subjects() {
     const classes = useStyles();
     const { state, dispatch } = useModal();
-    const { authState, authDispatch } = useAuth();
+    const { authState } = useAuth();
     const [subjects, setSubjects] = useState([]);
     const { token, userID } = authState;
 

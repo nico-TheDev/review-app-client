@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
                     console.error(err);
                 });
         }
-    }, [authState]);
+    }, [authState,history]);
 
     return (
         <AuthContext.Provider value={{ authState, authDispatch }}>

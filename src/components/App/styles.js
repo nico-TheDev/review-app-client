@@ -18,7 +18,7 @@ export const useStyles = makeStyles((theme) => ({
             easing: theme.transitions.easing.easeOut,
             duration: theme.transitions.duration.enteringScreen,
         }),
-        background:'primary'
+        background: "primary",
     },
     menuButton: {
         marginRight: theme.spacing(2),
@@ -40,7 +40,7 @@ export const useStyles = makeStyles((theme) => ({
         // necessary for content to be below app bar
         ...theme.mixins.toolbar,
         justifyContent: "space-between",
-        width:'100%',
+        width: "100%",
     },
     content: {
         flexGrow: 1,
@@ -49,8 +49,8 @@ export const useStyles = makeStyles((theme) => ({
             duration: theme.transitions.duration.leavingScreen,
         }),
         marginLeft: -drawerWidth,
-        paddingBottom:theme.spacing(6),
-        position:'relative'
+        paddingBottom: theme.spacing(6),
+        position: "relative",
     },
     contentShift: {
         transition: theme.transitions.create("margin", {
@@ -59,7 +59,7 @@ export const useStyles = makeStyles((theme) => ({
         }),
         marginLeft: 0,
     },
-    capitalize:{
-        textTransform:"capitalize"
-    }
+    capitalize: {
+        textTransform: "capitalize",
+    },
 }));
