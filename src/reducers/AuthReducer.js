@@ -22,7 +22,11 @@ export default function AuthReducer(state, action) {
         case ActionTypes.LOGIN_USER:
             return state;
         case ActionTypes.LOGOUT_USER:
-            return state;
+            return {
+                token: null,
+                user: null,
+                userID: null,
+            };
         default:
             return state;
     }
