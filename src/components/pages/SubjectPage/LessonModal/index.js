@@ -19,22 +19,34 @@ import useStyles from "./styles";
 import api from "api/reviewapp.instance";
 import { useAlert } from "contexts/AlertContext";
 import { useModal } from "contexts/ModalContext";
-import ActionTypes from 'actions/ActionTypes'
+import ActionTypes from "actions/ActionTypes";
 
-export default function LessonModal() {
+const initLesson = (editMode, id) =>
+    editMode
+        ? {
+              subjectID: editMode.subjectID,
+              title: editMode.title,
+              count: editMode.count,
+              description: editMode.description,
+          }
+        : {
+              subjectID: id,
+              title: "",
+              count: "",
+              description: "Insert short description here",
+          };
+export default function LessonModal({ editMode }) {
     const classes = useStyles();
     const params = useParams();
     const { handleAlertOpen } = useAlert();
-    const { state,dispatch } = useModal();
+    const { state, dispatch } = useModal();
     const { isLessonModalOpen: open } = state;
-    const [lessonData, setLessonData] = useState({
-        subjectID: params.id,
-        title: "",
-        count: "",
-        description: "",
-    });
+    const [lessonData, setLessonData] = useState(
+        initLesson(editMode, params.subjectID)
+    );
 
-    const handleClose = () => dispatch({type:ActionTypes.CLOSE_LESSON_MODAL})
+    const handleClose = () =>
+        dispatch({ type: ActionTypes.CLOSE_LESSON_MODAL });
 
     const handleChange = (e) => {
         const current = e.target.name;
@@ -49,12 +61,17 @@ export default function LessonModal() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        api.post(`/subject/${params.id}/lesson/new`, {
-            data: lessonData,
-        })
+        api.post(
+            editMode
+                ? `subject/${editMode.subjectID}/lesson/${editMode._id}`
+                : `/subject/${params.subjectID}/lesson/new`,
+            {
+                data: lessonData,
+            }
+        )
             .then((_) => {
                 setLessonData({
-                    subjectID: params.id,
+                    subjectID: params.subjectID,
                     title: "",
                     count: "",
                     description: "",
@@ -100,7 +117,7 @@ export default function LessonModal() {
                             className={classes.title}
                         >
                             <NoteAddIcon fontSize="large" />
-                            New Lesson
+                            {editMode ? editMode.title : "New Lesson"}
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
@@ -134,7 +151,7 @@ export default function LessonModal() {
                                 className={classes.form}
                                 name="count"
                                 onChange={handleChange}
-                                value={lessonData.number}
+                                value={lessonData.count}
                                 type="number"
                             />
                         </Grid>
@@ -157,7 +174,7 @@ export default function LessonModal() {
                                 fullWidth
                             >
                                 {" "}
-                                Add Lesson
+                                {editMode ? "Edit" : "Add"} Lesson
                             </Button>
                         </Grid>
                     </Grid>
