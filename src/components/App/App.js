@@ -10,6 +10,7 @@ import AllSubjects from "components/pages/DashboardPage";
 import SubjectPage from "components/pages/SubjectPage";
 import SignupPage from "components/pages/SignupPage";
 import LoginPage from "components/pages/LoginPage";
+import LessonPage from "components/pages/LessonPage";
 import NotFound from "components/pages/NotFoundPage";
 
 // CONTEXT
@@ -64,8 +65,13 @@ export default function App() {
                                         />
                                         <Route
                                             exact
-                                            path={`${match.url}/subject/:id`}
+                                            path={`${match.url}/subject/:subjectID`}
                                             component={SubjectPage}
+                                        />
+                                        <Route
+                                            exact
+                                            path={`${match.url}/subject/:subjectID/lesson/:lessonID`}
+                                            component={LessonPage}
                                         />
                                     </ModalProvider>
                                 </AlertProvider>

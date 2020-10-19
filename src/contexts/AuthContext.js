@@ -9,7 +9,7 @@ const initialState = () => {
     if (localStorage.getItem("token"))
         return {
             token: localStorage.getItem("token"),
-            user: null,
+            user: JSON.parse(localStorage.getItem("user")),
             userID: localStorage.getItem("userID"),
         };
 
@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
                     console.error(err);
                 });
         }
-    }, [authState,history]);
+    }, [authState, history]);
 
     return (
         <AuthContext.Provider value={{ authState, authDispatch }}>
