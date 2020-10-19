@@ -15,6 +15,7 @@ export default function AuthReducer(state, action) {
                 userID: action.userID,
             };
         case ActionTypes.SET_USER:
+            localStorage.setItem("user", JSON.stringify(action.user));
             return {
                 ...state,
                 user: action.user,
