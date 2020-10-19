@@ -12,31 +12,31 @@ import ActionTypes from 'actions/ActionTypes'
 import SubjectModal from 'components/pages/DashboardPage/SubjectModal'
 
 export default function SubjectPage({ match }) {
-    const { id } = match.params;
+    const { subjectID } = match.params;
     const {state, dispatch} = useModal()
     const classes = useStyles(); // Fab Style
     const [currentSubject, setCurrentSubject] = useState(null);
     const [lessons, setLessons] = useState([]);
 
     useEffect(() => {
-        api.get(`/subject/${id}`).then(
+        api.get(`/subject/${subjectID}`).then(
             (res) => {
                 console.log(res.data);
                 setCurrentSubject(res.data);
             },
             (err) => console.error(err)
         );
-    }, [id,state.isSubjectModalOpen]);
+    }, [subjectID,state.isSubjectModalOpen]);
 
     useEffect(() => {
-        api.get(`/subject/${id}/lesson/all`).then(
+        api.get(`/subject/${subjectID}/lesson/all`).then(
             (res) => {
                 console.log(res.data);
                 setLessons(res.data);
             },
             (err) => console.error(err)
         );
-    }, [id,state.isLessonModalOpen]);
+    }, [subjectID,state.isLessonModalOpen]);
 
     const handleOpen = () => {
         dispatch({type:ActionTypes.OPEN_LESSON_MODAL})

@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         justifyContent: "flex-start",
         alignItems: "center",
-        textTransform:'initial'
+        textTransform: "initial",
     },
     avatar: {
         background: blue[500],
@@ -28,12 +28,12 @@ const useStyles = makeStyles((theme) => ({
         width: theme.spacing(7),
         height: theme.spacing(7),
     },
-    details:{
-        width:"100%",
-        display:'flex',
-        alignItems:'center',
-        justifyContent:'space-between',
-    }
+    details: {
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
 }));
 
 export default function LessonCard({ details }) {
@@ -43,7 +43,7 @@ export default function LessonCard({ details }) {
         <Grid item xs={10}>
             <Paper elevation={4}>
                 <Button
-                    to={`/dashboard/lesson/${details._id}`}
+                    to={`/dashboard/subject/${details.subjectID}/lesson/${details._id}`}
                     component={Link}
                     className={classes.card}
                 >

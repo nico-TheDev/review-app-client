@@ -45,11 +45,11 @@ export default function SubjectHead({ details }) {
         api.delete(`/subject/${params.id}`)
             .then((res) => {
                 console.log(res);
-                handleAlertOpen('Lesson Deleted','success')
+                handleAlertOpen('Subject Deleted','success')
                 history.push("/dashboard");
             })
             .catch((err) => {
-                handleAlertOpen('Lesson not Deleted','error')
+                handleAlertOpen('Subject not Deleted','error')
                 console.error(err)});
     };
 
