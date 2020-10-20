@@ -6,6 +6,7 @@ import EditLessonModal from "./EditLessonModal";
 import api from "api/reviewapp.instance";
 import { useModal } from "contexts/ModalContext";
 import { useAuth } from "contexts/AuthContext";
+import TextEditor from "./TextEditor";
 
 export default function LessonPage({ match }) {
     const { subjectID, lessonID } = match.params;
@@ -32,25 +33,32 @@ export default function LessonPage({ match }) {
             <Grid container justify="center" alignContent="center" spacing={4}>
                 <Grid item xs={3}>
                     <Button
-                        variant="contained"
+                        variant={current === "notes" ? "contained" : "outlined"}
                         color="primary"
                         size="large"
                         fullWidth
+                        onClick={() => setCurrent("notes")}
                     >
                         Notes
                     </Button>
                 </Grid>
                 <Grid item xs={3}>
                     <Button
-                        variant="outlined"
+                        variant={
+                            current !== "review" ? "outlined" : "contained"
+                        }
                         color="primary"
                         size="large"
                         fullWidth
+                        onClick={() => setCurrent("review")}
                     >
                         Review
                     </Button>
                 </Grid>
+                {/* NOTE SECTION */}
+                {current === "notes" ? <TextEditor /> : "Review Component HERE"}
             </Grid>
+
             <EditLessonModal editMode={currentLesson} />
         </>
     );
