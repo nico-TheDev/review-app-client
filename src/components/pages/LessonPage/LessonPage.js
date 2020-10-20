@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Grid, Box, Typography, Button } from "@material-ui/core";
 
 import LessonHead from "./LessonHead";
-import LessonModal from "components/pages/SubjectPage/LessonModal";
+import EditLessonModal from "./EditLessonModal";
 import api from "api/reviewapp.instance";
 import { useModal } from "contexts/ModalContext";
 import { useAuth } from "contexts/AuthContext";
@@ -51,7 +51,7 @@ export default function LessonPage({ match }) {
                     </Button>
                 </Grid>
             </Grid>
-            <LessonModal editMode={currentLesson} />
+            <EditLessonModal editMode={currentLesson} />
         </>
     );
 }
