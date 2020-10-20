@@ -9,7 +9,7 @@ import LessonCard from "./LessonCard";
 import LessonModal from "./LessonModal";
 import { useModal } from "contexts/ModalContext";
 import ActionTypes from 'actions/ActionTypes'
-import SubjectModal from 'components/pages/DashboardPage/SubjectModal'
+import EditSubjectModal from './EditSubjectModal/'
 
 export default function SubjectPage({ match }) {
     const { subjectID } = match.params;
@@ -66,7 +66,7 @@ export default function SubjectPage({ match }) {
                 <AddNoteIcon />
             </Fab>
             <LessonModal/>
-            <SubjectModal editSubject={currentSubject}/>
+            <EditSubjectModal editSubject={currentSubject}/>
         </>
     );
 }
