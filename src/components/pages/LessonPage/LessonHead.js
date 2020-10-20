@@ -50,7 +50,7 @@ export default function LessonHead({ details, current }) {
             .then((res) => {
                 console.log(res);
                 handleAlertOpen("Lesson Deleted", "success");
-                history.push("/dashboard");
+                history.goBack();
             })
             .catch((err) => {
                 handleAlertOpen("Lesson not Deleted", "error");
