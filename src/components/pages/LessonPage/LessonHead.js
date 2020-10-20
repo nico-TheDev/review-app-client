@@ -10,6 +10,7 @@ import { useModal } from "contexts/ModalContext";
 import ActionTypes from "actions/ActionTypes";
 import PlayButton from "components/shared/GreenButton";
 import NoteSubhead from "./NoteSubheading";
+import ReviewSubhead from "./ReviewSubheading";
 
 const useStyles = makeStyles((theme) => ({
     head: {
@@ -77,8 +78,11 @@ export default function LessonHead({ details, current }) {
                 </Typography>
             </Grid>
 
-            <NoteSubhead details={details} />
-
+            {current === "notes" ? (
+                <NoteSubhead details={details} />
+            ) : (
+                <ReviewSubhead />
+            )}
             <Grid item xs={9} container justify="center">
                 <Button
                     variant="contained"
