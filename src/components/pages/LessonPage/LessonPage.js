@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Box, Typography, Button } from "@material-ui/core";
+import { Grid, Button, Fab } from "@material-ui/core";
+import CreateIcon from "@material-ui/icons/CreateNewFolderOutlined";
 
 import LessonHead from "./LessonHead";
 import EditLessonModal from "./EditLessonModal";
@@ -7,14 +8,18 @@ import api from "api/reviewapp.instance";
 import { useModal } from "contexts/ModalContext";
 import { useAuth } from "contexts/AuthContext";
 import TextEditor from "./TextEditor";
+import Review from "./Review";
+import useFabStyle from "components/shared/fabUseStyle";
+import QuestionModal from "./QuestionModal";
 
 export default function LessonPage({ match }) {
     const { subjectID, lessonID } = match.params;
     const { state: modalState } = useModal();
     const { authState, authDispatch } = useAuth();
     const [current, setCurrent] = useState("notes");
-
+    const classes = useFabStyle();
     const [currentLesson, setCurrentLesson] = useState(null);
+    const [isQuestionModalOpen, setIsQuestionModalOpen] = useState(false);
 
     useEffect(() => {
         api.get(`/subject/${subjectID}/lesson/${lessonID}`)
@@ -26,6 +31,9 @@ export default function LessonPage({ match }) {
                 console.error(err);
             });
     }, [lessonID, subjectID, modalState.isLessonModalOpen]);
+
+    const handleOpen = () => setIsQuestionModalOpen(true)
+    const handleClose = () => setIsQuestionModalOpen(false)
 
     return (
         <>
@@ -56,10 +64,21 @@ export default function LessonPage({ match }) {
                     </Button>
                 </Grid>
                 {/* NOTE SECTION */}
-                {current === "notes" ? <TextEditor /> : "Review Component HERE"}
+                {current === "notes" ? <TextEditor /> : <Review />}
             </Grid>
 
+            {/* MODALS */}
+            <Fab
+                className={classes.fabStyle}
+                color="primary"
+                onClick={handleOpen}
+                disabled={current !== "review"}
+            >
+                <CreateIcon />
+            </Fab>
+
             <EditLessonModal editMode={currentLesson} />
+            <QuestionModal open={isQuestionModalOpen} handleClose={handleClose}/>
         </>
     );
 }
