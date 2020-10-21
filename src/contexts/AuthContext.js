@@ -39,6 +39,8 @@ export const AuthProvider = ({ children }) => {
                 .catch((err) => {
                     console.error(err);
                 });
+        } else if (authState.user) {
+            history.push("/dashboard");
         }
     }, [authState, history]);
 
