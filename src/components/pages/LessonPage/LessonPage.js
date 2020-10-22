@@ -11,15 +11,18 @@ import TextEditor from "./TextEditor";
 import Review from "./Review";
 import useFabStyle from "components/shared/fabUseStyle";
 import QuestionModal from "./QuestionModal";
+import EditQuestionModal from "./EditQuestionModal";
 
 export default function LessonPage({ match }) {
     const { subjectID, lessonID } = match.params;
-    const { state: modalState } = useModal();
-    const { authState, authDispatch } = useAuth();
-    const [current, setCurrent] = useState("notes");
     const classes = useFabStyle();
+    const { authState, authDispatch } = useAuth();
+    const { state: modalState } = useModal();
+    const [current, setCurrent] = useState("notes");
     const [currentLesson, setCurrentLesson] = useState(null);
     const [isQuestionModalOpen, setIsQuestionModalOpen] = useState(false);
+    const [isEditQuestionModalOpen, setIsEditQuestionModalOpen] = useState(false);
+    const [targetQuestion, setTargetQuestion] = useState(null);
 
     useEffect(() => {
         api.get(`/subject/${subjectID}/lesson/${lessonID}`)
@@ -32,8 +35,10 @@ export default function LessonPage({ match }) {
             });
     }, [lessonID, subjectID, modalState.isLessonModalOpen]);
 
-    const handleOpen = () => setIsQuestionModalOpen(true)
-    const handleClose = () => setIsQuestionModalOpen(false)
+    const handleOpen = () => setIsQuestionModalOpen(true);
+    const handleClose = () => setIsQuestionModalOpen(false);
+    const handleOpenEdit = () => setIsEditQuestionModalOpen(true);
+    const handleCloseEdit = () => setIsEditQuestionModalOpen(false);
 
     return (
         <>
@@ -64,7 +69,15 @@ export default function LessonPage({ match }) {
                     </Button>
                 </Grid>
                 {/* NOTE SECTION */}
-                {current === "notes" ? <TextEditor /> : <Review />}
+                {current === "notes" ? (
+                    <TextEditor />
+                ) : (
+                    <Review
+                        update={{isQuestionModalOpen,isEditQuestionModalOpen}}
+                        setTargetQuestion={setTargetQuestion}
+                        handleOpenEdit={handleOpenEdit}
+                    />
+                )}
             </Grid>
 
             {/* MODALS */}
@@ -78,7 +91,15 @@ export default function LessonPage({ match }) {
             </Fab>
 
             <EditLessonModal editMode={currentLesson} />
-            <QuestionModal open={isQuestionModalOpen} handleClose={handleClose}/>
+            <QuestionModal
+                open={isQuestionModalOpen}
+                handleClose={handleClose}
+            />
+            <EditQuestionModal
+                open={isEditQuestionModalOpen}
+                handleClose={handleCloseEdit}
+                details={targetQuestion}
+            />
         </>
     );
 }
