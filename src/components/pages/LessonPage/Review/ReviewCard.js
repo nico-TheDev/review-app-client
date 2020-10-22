@@ -5,6 +5,8 @@ import DeleteIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/EditRounded";
 import blue from "@material-ui/core/colors/blue";
 import api from "api/reviewapp.instance";
+import { useAlert } from "contexts/AlertContext";
+
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -24,21 +26,28 @@ export default function ReviewCard({
     handleOpenEdit,
 }) {
     const classes = useStyles();
+    const { handleAlertOpen } = useAlert();
 
     const handleEdit = () => {
         api.get(`/question/${question._id}`)
             .then((res) => {
                 setTargetQuestion(res.data);
                 handleOpenEdit();
+                handleAlertOpen("Question Updated", "success");
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+                handleAlertOpen("Question not Updated", "error");
+                console.log(err);
+            });
     };
     const handleDelete = () => {
         api.delete(`/question/${question._id}`)
             .then((res) => {
-                console.log("Question Deleted");
+                handleAlertOpen("Question Deleted", "success");
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+                handleAlertOpen("Question not deleted", "error");
+                console.log(err)});
     };
 
     return (
