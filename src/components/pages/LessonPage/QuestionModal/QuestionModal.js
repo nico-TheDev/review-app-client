@@ -28,7 +28,7 @@ export default function QuestionModal({ open, handleClose }) {
     const params = useParams();
     const { lessonID } = params;
     const [questionData, setQuestionData] = useState({
-        lessonID: "",
+        lessonID,
         question: "",
         choiceOne: "",
         choiceTwo: "",
@@ -54,33 +54,32 @@ export default function QuestionModal({ open, handleClose }) {
             api.post("/question/new", {
                 data: {
                     ...questionData,
-                    lessonID,
                 },
                 params: {
-                    lessonID,
                     token,
                 },
             })
                 .then((_) => {
                     setQuestionData({
-                        name: "",
-                        code: "",
-                        schedule: "",
-                        professor: "",
                         lessonID,
+                        question: "",
+                        choiceOne: "",
+                        choiceTwo: "",
+                        choiceThree: "",
+                        choiceFour: "",
+                        answer: "",
                     });
                     setTimeout(handleClose, 500);
-                    handleAlertOpen("Subject Added", "success");
+                    handleAlertOpen("Question Added", "success");
                 })
                 .catch((err) => {
-                    handleAlertOpen("Subject not Added!", "error");
+                    handleAlertOpen("Question not Added!", "error");
                     console.error(err);
                 });
         } else {
             handleAlertOpen("Please fill the text fields", "error");
         }
     };
-    console.log(params);
     return (
         <Modal
             aria-labelledby="transition-modal-title"
@@ -113,7 +112,7 @@ export default function QuestionModal({ open, handleClose }) {
                             className={classes.title}
                         >
                             <NoteAddIcon fontSize="large" />
-                            New Question Item{" "}
+                            New Question Item
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
