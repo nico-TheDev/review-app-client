@@ -33,7 +33,6 @@ export default function ReviewCard({
             .then((res) => {
                 setTargetQuestion(res.data);
                 handleOpenEdit();
-                handleAlertOpen("Question Updated", "success");
             })
             .catch((err) => {
                 handleAlertOpen("Question not Updated", "error");
