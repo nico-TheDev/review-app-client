@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function LessonHead({ details, current }) {
+export default function LessonHead({ details, current, handleOpenQuiz }) {
     const classes = useStyles();
     const { handleAlertOpen } = useAlert();
     const { dispatch } = useModal();
@@ -101,17 +101,17 @@ export default function LessonHead({ details, current }) {
                 >
                     Edit Lesson
                 </Button>
-                {current === "review" ? (
+                {current === "review" && (
                     <PlayButton
                         variant="contained"
                         color="primary"
                         startIcon={<PlayArrow />}
                         className={classes.button}
-                        onClick={handleEdit}
+                        onClick={handleOpenQuiz}
                     >
                         Start Review
                     </PlayButton>
-                ) : null}
+                )}
             </Grid>
         </Grid>
     );

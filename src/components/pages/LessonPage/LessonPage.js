@@ -12,6 +12,7 @@ import Review from "./Review";
 import useFabStyle from "components/shared/fabUseStyle";
 import QuestionModal from "./QuestionModal";
 import EditQuestionModal from "./EditQuestionModal";
+import QuizModal from "./QuizModal";
 
 export default function LessonPage({ match }) {
     const { subjectID, lessonID } = match.params;
@@ -21,7 +22,10 @@ export default function LessonPage({ match }) {
     const [current, setCurrent] = useState("notes");
     const [currentLesson, setCurrentLesson] = useState(null);
     const [isQuestionModalOpen, setIsQuestionModalOpen] = useState(false);
-    const [isEditQuestionModalOpen, setIsEditQuestionModalOpen] = useState(false);
+    const [isEditQuestionModalOpen, setIsEditQuestionModalOpen] = useState(
+        false
+    );
+    const [isQuizOpen, setIsQuizOpen] = useState(false);
     const [targetQuestion, setTargetQuestion] = useState(null);
 
     useEffect(() => {
@@ -39,10 +43,12 @@ export default function LessonPage({ match }) {
     const handleClose = () => setIsQuestionModalOpen(false);
     const handleOpenEdit = () => setIsEditQuestionModalOpen(true);
     const handleCloseEdit = () => setIsEditQuestionModalOpen(false);
+    const handleOpenQuiz = () => setIsQuizOpen(true);
+    const handleCloseQuiz = () => setIsQuizOpen(false);
 
     return (
         <>
-            <LessonHead details={currentLesson} current={current} />
+            <LessonHead details={currentLesson} current={current} handleOpenQuiz={handleOpenQuiz}/>
             <Grid container justify="center" alignContent="center" spacing={4}>
                 <Grid item xs={3}>
                     <Button
@@ -73,7 +79,10 @@ export default function LessonPage({ match }) {
                     <TextEditor />
                 ) : (
                     <Review
-                        update={{isQuestionModalOpen,isEditQuestionModalOpen}}
+                        update={{
+                            isQuestionModalOpen,
+                            isEditQuestionModalOpen,
+                        }}
                         setTargetQuestion={setTargetQuestion}
                         handleOpenEdit={handleOpenEdit}
                     />
@@ -99,6 +108,10 @@ export default function LessonPage({ match }) {
                 open={isEditQuestionModalOpen}
                 handleClose={handleCloseEdit}
                 details={targetQuestion}
+            />
+            <QuizModal
+                open={isQuizOpen}
+                handleClose={handleCloseQuiz}
             />
         </>
     );
