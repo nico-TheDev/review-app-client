@@ -18,7 +18,7 @@ import useStyles from "./styles";
 import api from "api/reviewapp.instance";
 import { useAlert } from "contexts/AlertContext";
 import { useAuth } from "contexts/AuthContext";
-import ActionTypes from "actions/ActionTypes";
+
 
 export default function EditQuestionModal({ open, handleClose, details }) {
     const classes = useStyles();
@@ -35,6 +35,7 @@ export default function EditQuestionModal({ open, handleClose, details }) {
         choiceThree: "",
         choiceFour: "",
         answer: "",
+        isAnswered:false
     });
 
     useEffect(() => {
@@ -70,12 +71,13 @@ export default function EditQuestionModal({ open, handleClose, details }) {
                         choiceThree: "",
                         choiceFour: "",
                         answer: "",
+                        isAnswered:false
                     });
                     setTimeout(handleClose, 500);
-                    handleAlertOpen("Question Added", "success");
+                    handleAlertOpen("Question Updated", "success");
                 })
                 .catch((err) => {
-                    handleAlertOpen("Question not Added!", "error");
+                    handleAlertOpen("Question not Updated!", "error");
                     console.error(err);
                 });
         } else {

@@ -35,6 +35,7 @@ export default function QuestionModal({ open, handleClose }) {
         choiceThree: "",
         choiceFour: "",
         answer: "",
+        isAnswered:false
     });
 
     const handleChange = (e) => {
@@ -68,6 +69,7 @@ export default function QuestionModal({ open, handleClose }) {
                         choiceThree: "",
                         choiceFour: "",
                         answer: "",
+                        isAnswered:false
                     });
                     setTimeout(handleClose, 500);
                     handleAlertOpen("Question Added", "success");
