@@ -42,7 +42,7 @@ export default function SubjectHead({ details }) {
     const history = useHistory();
 
     const handleDelete = () => {
-        api.delete(`/subject/${params.id}`)
+        api.delete(`/subject/${params.subjectID}`)
             .then((res) => {
                 console.log(res);
                 handleAlertOpen('Subject Deleted','success')

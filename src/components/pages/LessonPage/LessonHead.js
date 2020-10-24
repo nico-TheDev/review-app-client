@@ -43,11 +43,11 @@ export default function LessonHead({ details, current, handleOpenQuiz }) {
     const classes = useStyles();
     const { handleAlertOpen } = useAlert();
     const { dispatch } = useModal();
-    const params = useParams();
+    const { subjectID, lessonID } = useParams();
     const history = useHistory();
 
     const handleDelete = () => {
-        api.delete(`/subject/${params.subjectID}/lesson/${params.lessonID}`)
+        api.delete(`/subject/${subjectID}/lesson/${lessonID}`)
             .then((res) => {
                 console.log(res);
                 handleAlertOpen("Lesson Deleted", "success");
