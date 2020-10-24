@@ -8,25 +8,19 @@ import {
     Typography,
     Divider,
     Button,
-    TextField,
     IconButton,
 } from "@material-ui/core";
-import NoteAddIcon from "@material-ui/icons/NoteAdd";
 import CloseIcon from "@material-ui/icons/Close";
 import useStyles from "./styles";
 
 import api from "api/reviewapp.instance";
-import { useAlert } from "contexts/AlertContext";
-import { useAuth } from "contexts/AuthContext";
 import shuffle from "util/shuffle";
 
-export default function EditQuestionModal({ open, handleClose, details }) {
+export default function QuizModal({ open, handleClose, details }) {
     const classes = useStyles();
-    const { handleAlertOpen } = useAlert();
-    const { authState } = useAuth();
-    const { token } = authState;
     const params = useParams();
     const { lessonID } = params;
+    let [counter, setCounter] = useState(0);
     const [currentQuestion, setCurrentQuestion] = useState(null);
     const [questionList, setQuestionList] = useState([]);
     const [status, setStatus] = useState({
@@ -38,15 +32,12 @@ export default function EditQuestionModal({ open, handleClose, details }) {
     useEffect(() => {
         api.get(`/question/${lessonID}/all`)
             .then((res) => {
-                const list = res.data;
-                setQuestionList(shuffle(list));
+                const list = shuffle(res.data);
+                setQuestionList(list);
+                setCurrentQuestion(list[0]);
             })
             .catch((err) => console.log(err));
     }, [lessonID]);
-
-    useEffect(() => {
-        if (questionList.length) setCurrentQuestion(questionList[0]);
-    }, [questionList]);
 
     useEffect(() => {
         setStatus({
@@ -54,7 +45,13 @@ export default function EditQuestionModal({ open, handleClose, details }) {
             wrong: 0,
             answered: 0,
         });
+        setCounter(0);
+        setCurrentQuestion(questionList[0]);
     }, [handleClose]);
+
+    useEffect(() => {
+        if (counter) setCurrentQuestion(questionList[counter]);
+    }, [counter, questionList]);
 
     const handleClick = (e) => {
         const answer = e.target.textContent;
@@ -72,14 +69,7 @@ export default function EditQuestionModal({ open, handleClose, details }) {
                 answered: (status.answered += 1),
             });
         }
-
-        const updatedList = questionList.filter((item) => {
-            if (item._id !== currentQuestion._id) {
-                return item;
-            }
-        });
-
-        setQuestionList(updatedList);
+        setCounter((counter += 1));
     };
 
     return (
@@ -129,19 +119,24 @@ export default function EditQuestionModal({ open, handleClose, details }) {
                         component="form"
                         spacing={3}
                     >
+                        {counter === questionList.length && (
+                            <>
+                                <Grid item xs={4}>
+                                    <Typography variant="body2">
+                                        Correct Answer:{status.correct}
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <Typography variant="body2">
+                                        Wrong Answer:{status.wrong}
+                                    </Typography>
+                                </Grid>
+                            </>
+                        )}
                         <Grid item xs={4}>
                             <Typography variant="body2">
-                                Correct Answer:{status.correct}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <Typography variant="body2">
-                                Wrong Answer:{status.wrong}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <Typography variant="body2">
-                                Answered:{status.answered} /5
+                                Answered:{status.answered} /
+                                {questionList.length}
                             </Typography>
                         </Grid>
                         <Grid item xs={12} className={classes.question}>
@@ -149,7 +144,7 @@ export default function EditQuestionModal({ open, handleClose, details }) {
                                 {currentQuestion?.question}
                             </Typography>
                         </Grid>
-                        {currentQuestion &&
+                        {questionList.length >= 5 && currentQuestion ? (
                             Object.keys(currentQuestion).map((key, i) => {
                                 if (key.includes("choice")) {
                                     return (
@@ -165,7 +160,17 @@ export default function EditQuestionModal({ open, handleClose, details }) {
                                         </Grid>
                                     );
                                 }
-                            })}
+                            })
+                        ) : (
+                            <Typography
+                                variant="h4"
+                                style={{ textAlign: "center" }}
+                            >
+                                {counter === questionList.length
+                                    ? `You scored ${status.correct}/${status.answered}`
+                                    : "You should have a minimum of 5 questions"}{" "}
+                            </Typography>
+                        )}
                     </Grid>
                 </Grid>
             </Fade>
