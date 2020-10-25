@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const reviewInstance = axios.create({
-    baseURL: "http://localhost:3000/",
+    baseURL: "https://review-app-proto.herokuapp.com/",
 });
 
 export default reviewInstance;
