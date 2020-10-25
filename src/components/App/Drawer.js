@@ -24,17 +24,17 @@ const ROUTES = [
     },
     {
         label: "Lessons",
-        to: "/dashboard/lessons",
+        to: "/notFound",
         icon: <LibraryBooksIcon />,
     },
     {
         label: "Settings",
-        to: "/dashboard/settings",
+        to: "/notFound",
         icon: <SettingsIcon />,
     },
     {
         label: "Theme",
-        to: "/dashboard/theme",
+        to: "/notFound",
         icon: <FormatPaintIcon />,
     },
 ];

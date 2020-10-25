@@ -36,7 +36,7 @@ export default function SubjectModal() {
     const handleClose = () =>
         dispatch({ type: ActionTypes.CLOSE_SUBJECT_MODAL });
 
-    const handleChange = (e) => {
+    const handleChange = (e) => {   
         const current = e.target.name;
         const newData = {
             ...subjectData,
