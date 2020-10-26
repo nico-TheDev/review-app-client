@@ -16,7 +16,12 @@ import useStyles from "./styles";
 import api from "api/reviewapp.instance";
 import shuffle from "util/shuffle";
 
-export default function QuizModal({ open, handleClose, details }) {
+export default function QuizModal({
+    open,
+    handleClose,
+    isQuestionModalOpen,
+    isEditQuestionModalOpen,
+}) {
     const classes = useStyles();
     const params = useParams();
     const { lessonID } = params;
@@ -37,7 +42,7 @@ export default function QuizModal({ open, handleClose, details }) {
                 setCurrentQuestion(list[0]);
             })
             .catch((err) => console.log(err));
-    }, [lessonID]);
+    }, [lessonID, isQuestionModalOpen, isEditQuestionModalOpen]);
 
     useEffect(() => {
         setStatus({

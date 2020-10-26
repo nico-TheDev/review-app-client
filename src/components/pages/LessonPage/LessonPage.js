@@ -48,7 +48,11 @@ export default function LessonPage({ match }) {
 
     return (
         <>
-            <LessonHead details={currentLesson} current={current} handleOpenQuiz={handleOpenQuiz}/>
+            <LessonHead
+                details={currentLesson}
+                current={current}
+                handleOpenQuiz={handleOpenQuiz}
+            />
             <Grid container justify="center" alignContent="center" spacing={4}>
                 <Grid item xs={3}>
                     <Button
@@ -112,6 +116,8 @@ export default function LessonPage({ match }) {
             <QuizModal
                 open={isQuizOpen}
                 handleClose={handleCloseQuiz}
+                isQuestionModalOpen={isQuestionModalOpen}
+                isEditQuestionModalOpen={isEditQuestionModalOpen}
             />
         </>
     );
