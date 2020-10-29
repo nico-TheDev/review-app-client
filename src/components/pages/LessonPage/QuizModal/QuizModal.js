@@ -42,7 +42,7 @@ export default function QuizModal({
                 setCurrentQuestion(list[0]);
             })
             .catch((err) => console.log(err));
-    }, [lessonID, isQuestionModalOpen, isEditQuestionModalOpen]);
+    }, [lessonID, isQuestionModalOpen, isEditQuestionModalOpen,handleClose]);
 
     useEffect(() => {
         setStatus({
@@ -146,7 +146,7 @@ export default function QuizModal({
                         </Grid>
                         <Grid item xs={12} className={classes.question}>
                             <Typography variant="h6">
-                                {currentQuestion?.question}
+                                {questionList.length >= 5 && currentQuestion?.question}
                             </Typography>
                         </Grid>
                         {questionList.length >= 5 && currentQuestion ? (
