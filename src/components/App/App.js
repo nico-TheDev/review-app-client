@@ -12,6 +12,7 @@ import SignupPage from "components/pages/SignupPage";
 import LoginPage from "components/pages/LoginPage";
 import LessonPage from "components/pages/LessonPage";
 import NotFound from "components/pages/NotFoundPage";
+import NotAvailablePage from "components/pages/NotAvailablePage";
 
 // CONTEXT
 import { AlertProvider } from "contexts/AlertContext";
@@ -82,6 +83,7 @@ export default function App() {
             ) : (
                 <Redirect to="/login" />
             )}
+            <Route path="/not-available" component={NotAvailablePage} />
             <Route component={NotFound} />
         </Switch>
     );

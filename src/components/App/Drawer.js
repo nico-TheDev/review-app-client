@@ -24,17 +24,17 @@ const ROUTES = [
     },
     {
         label: "Lessons",
-        to: "/notFound",
+        to: "/not-available",
         icon: <LibraryBooksIcon />,
     },
     {
         label: "Settings",
-        to: "/notFound",
+        to: "/not-available",
         icon: <SettingsIcon />,
     },
     {
         label: "Theme",
-        to: "/notFound",
+        to: "/not-available",
         icon: <FormatPaintIcon />,
     },
 ];
